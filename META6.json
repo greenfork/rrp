@@ -1,0 +1,20 @@
+{
+  "auth": "",
+  "build-depends": [
+  ],
+  "depends": [
+    "MUGS"
+  ],
+  "description": "A brand new and very nice module",
+  "name": "RakoonRolePlayers",
+  "provides": {
+    "MUGS::Client::Game::RakoonRolePlayers": "lib/MUGS/Client/Game/RakoonRolePlayers.rakumod",
+    "MUGS::Server::Game::RakoonRolePlayers": "lib/MUGS/Server/Game/RakoonRolePlayers.rakumod",
+    "MUGS::UI::CLI::Game::RakoonRolePlayers": "lib/MUGS/UI/CLI/Game/RakoonRolePlayers.rakumod"
+  },
+  "resources": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}

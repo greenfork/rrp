@@ -10,9 +10,8 @@ class MUGS::Server::Game::RakoonRolePlayers::CharacterInstance is RPG::Base::Cre
 
 #| Server side of Rakoon as a role player game
 class MUGS::Server::Game::RakoonRolePlayers is MUGS::Server::Genre::IF {
-
-    method game-type() { 'rakoon-role-players' }
-    method game-desc() { 'Rakoon as a role player' }
+    method game-type() { 'rrp' }
+    method game-desc() { 'Rakoon as a role player!' }
     method name(::?CLASS:D:) { $.character.screen-name }
 
     method wrap-character(MUGS::Character:D $character) {

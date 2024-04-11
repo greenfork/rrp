@@ -7,7 +7,7 @@ use MUGS::UI::CLI::Genre::IF;
 
 #| CLI for a Rakoon as a role player game
 class MUGS::UI::CLI::Game::RakoonRolePlayers is MUGS::UI::CLI::Genre::IF {
-    method game-type() { 'rakoon-role-players' }
+    method game-type() { 'rrp' }
 
     method game-help() { 'You are a Rakoon' }
 }

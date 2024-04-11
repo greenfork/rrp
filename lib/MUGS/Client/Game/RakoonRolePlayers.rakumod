@@ -6,7 +6,7 @@ use MUGS::Client::Genre::IF;
 
 #| Client side of Rakoon as a role player game
 class MUGS::Client::Game::RakoonRolePlayers is MUGS::Client::Genre::IF {
-    method game-type() { 'rakoon-role-players' }
+    method game-type() { 'rrp' }
 }
 
 
