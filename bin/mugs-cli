@@ -3,10 +3,7 @@ use v6.d;
 
 use lib '../MUGS-UI-CLI/';
 use lib '../MUGS-Core/';
-
-need MUGS::Client::Game::RakoonRolePlayers;
-need MUGS::Server::Game::RakoonRolePlayers;
-need MUGS::UI::CLI::Game::RakoonRolePlayers;
+use lib 'lib';
 
 BEGIN put 'Loading and optimizing MUGS.' if $*OUT.t && !@*ARGS.grep('-?'|'--help');
 BEGIN PROCESS::<$BM_INSTANT> = now;
