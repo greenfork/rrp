@@ -10,6 +10,23 @@ class MUGS::UI::CLI::Game::RakoonRolePlayers is MUGS::UI::CLI::Genre::IF {
     method game-type() { 'rrp' }
 
     method game-help() { 'You are a Rakoon' }
+
+    method show-game-state($response) {
+        callsame;
+
+        my %data := $response ~~ Map ?? $response !! $response.data;
+
+        with %data<classes> {
+            my sub cl($class) {
+                $.app-ui.put-colored($class, 'bold');
+                put '';
+            }
+            for .keys.sort.reverse -> $class-name {
+                cl($class-name);
+                $.app-ui.put-sanitized(%data<classes>{$class-name})
+            }
+        }
+    }
 }
 
 

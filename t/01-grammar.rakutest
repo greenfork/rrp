@@ -1,0 +1,18 @@
+use Test;
+
+need MUGS::Server::Game::RakoonRolePlayers;
+
+plan 3;
+
+my $input = "Archer";
+
+my @class-choices = CLASSES.keys.sort.reverse.map(*.fc);
+my $*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
+my $actions = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions;
+my $result = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
+
+ok $result, 'Parsed something';
+is $result<class-choice>, 'archer', "Parsed 'archer'";
+is $result.made, 'archer', "Made 'archer'";
+
+done-testing;

@@ -1,5 +1,7 @@
 use Test;
 
-plan 1;
+plan 3;
 
 use-ok "MUGS::Client::Game::RakoonRolePlayers";
+use-ok "MUGS::Server::Game::RakoonRolePlayers";
+use-ok "MUGS::UI::CLI::Game::RakoonRolePlayers";
