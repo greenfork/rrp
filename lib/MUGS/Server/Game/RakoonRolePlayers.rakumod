@@ -6,7 +6,7 @@ use RPG::Base::Creature;
 
 class MUGS::Server::Game::RakoonRolePlayers::CharacterInstance is RPG::Base::Creature {
     has MUGS::Character:D $.character is required;
-    has $.class is rw = Nil;
+    has $.class is rw;
 }
 
 constant CLASSES = %{
@@ -48,29 +48,54 @@ DESC
 
 #| Context for parsing (room exits, visible items, etc.)
 class MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context {
-    has @.class-choices;
+    has $.instance;
+
+    constant common-actions = <quit>;
+    constant class-choices = CLASSES.keys.sort.reverse.map(*.fc);
+
+    method available-actions() {
+        common-actions.Array.append: self.class-choices();
+    }
+
+    method class-choices() {
+        $!instance.class ?? [] !! class-choices;
+    }
 }
 
 #| A single player command
 grammar MUGS::Server::Game::RakoonRolePlayers::CommandParser {
-    rule TOP { <class-choice> }
-    rule class-choice { @($*ctx.class-choices) }
+    rule TOP {
+        | <class-choice>
+        | <command>
+    }
+    rule class-choice { @($*ctx.class-choices()) }
+
+    proto rule command {*}
+    rule command:sym<quit> { <sym> }
 }
 
 class MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions {
-    method TOP($/)                    { make $<class-choice>.made }
+    method TOP($/)                    { make $<class-choice>.made || $<command>.made }
     method class-choice($/)           { make ~$/ }
+    method command:sym<quit>($/)      { make ~$/ }
+}
+
+role MUGS::Server::Game::RakoonRolePlayers::PlayerActions {
+    method set-class($instance, $class) {
+        $instance.class = $class;
+        { message => "You are {$instance.class} now!" }
+    }
 }
 
 #| Server side of Rakoon as a role player game
-class MUGS::Server::Game::RakoonRolePlayers is MUGS::Server::Genre::IF {
+class MUGS::Server::Game::RakoonRolePlayers is MUGS::Server::Genre::IF
+        does MUGS::Server::Game::RakoonRolePlayers::PlayerActions {
     method game-type() { 'rrp' }
     method game-desc() { 'Rakoon as a role player!' }
     method name(::?CLASS:D:) { $.character.screen-name }
 
     method wrap-character(MUGS::Character:D $character) {
         my $instance = CharacterInstance.new(:$character);
-        say "wrap-character: ", $instance;
         # $!start.add-thing($instance);
         $instance
     }
@@ -82,29 +107,22 @@ class MUGS::Server::Game::RakoonRolePlayers is MUGS::Server::Genre::IF {
     }
 
     #| Process the parsed player command
-    method process-player-command(CharacterInstance:D $instance, Str:D $command, @args) {
+    method process-player-command($ctx, CharacterInstance:D $instance, Str:D $command, @args) {
         given $command {
             when 'quit'      { self.set-gamestate(Finished); {} }
-            when 'go'        { self.move-character($instance, @args[0]); {} }
-            when 'inventory' { self.inventory($instance) }
-            when 'look'      { {} }
-            when 'lock'      { self.lock-thing(  $instance.known-thing-named(@args[0])) }
-            when 'unlock'    { self.unlock-thing($instance.known-thing-named(@args[0])) }
-            when any($*ctx.class-choices) { $instance.class = $_; {:message("Now it is {$instance.class}")} }
-            default          { self.fail("I can't handle that command yet") }
+            when any($ctx.class-choices()) { self.set-class($instance, $_) }
+            default          { self.fail('Not implemented command') }
         }
     }
 
     method process-unparsed-input(::?CLASS:D: MUGS::Character:D :$character!,
                                   Str:D :$input!, :$context) {
-        # XXXX: Need a better exception class
         my $parsed = self.parse-command($input, $context)
-            or self.fail('Could not parse your input');
+            or self.fail("Available actions: {$context.available-actions()}");
 
-        my $*ctx = $context;
         my ($command, @args) = |$parsed.made;
-        my $instance  = self.instance-for-character($character);
-        my %result   := self.process-player-command($instance, $command, @args);
+        my $instance = self.instance-for-character($character);
+        my %result := self.process-player-command($context, $instance, $command, @args);
 
         %result;
     }
@@ -116,9 +134,8 @@ class MUGS::Server::Game::RakoonRolePlayers is MUGS::Server::Genre::IF {
 
     method parsing-context(::?CLASS:D: MUGS::Character:D :$character!) {
         my $instance = self.instance-for-character($character);
-        my @class-choices = CLASSES.keys.sort.reverse.map(*.fc);
 
-        MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
+        MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:$instance);
     }
 
     method initial-state(::?CLASS:D: MUGS::Character:D :$character) {

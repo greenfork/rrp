@@ -2,17 +2,30 @@ use Test;
 
 need MUGS::Server::Game::RakoonRolePlayers;
 
-plan 3;
+plan 8;
 
-my $input = "Archer";
-
+my $input;
+my $*ctx;
+my $actions;
+my $rs;
 my @class-choices = CLASSES.keys.sort.reverse.map(*.fc);
-my $*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
-my $actions = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions;
-my $result = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
 
-ok $result, 'Parsed something';
-is $result<class-choice>, 'archer', "Parsed 'archer'";
-is $result.made, 'archer', "Made 'archer'";
+$input = "Archer";
+$*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
+$actions = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions;
+$rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
+
+ok $rs, 'Parsed something';
+is $rs<class-choice>, 'archer', "Parsed 'archer'";
+is $rs<class-choice>.made, 'archer', "Made 'archer'";
+is $rs.made, 'archer', "Made TOP 'archer'";
+$*ctx = Nil;
+
+$input = 'quit';
+$rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
+ok $rs, 'Parsed something';
+is $rs<command>, 'quit', "Parsed 'quit'";
+is $rs<command>.made, 'quit', "Made 'quit'";
+is $rs.made, 'quit', "Made TOP 'quit'";
 
 done-testing;
