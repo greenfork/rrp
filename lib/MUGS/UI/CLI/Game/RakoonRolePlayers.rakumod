@@ -17,13 +17,15 @@ class MUGS::UI::CLI::Game::RakoonRolePlayers is MUGS::UI::CLI::Genre::IF {
         my %data := $response ~~ Map ?? $response !! $response.data;
 
         with %data<classes> {
-            my sub cl($class) {
+            my sub class-name($class) {
                 $.app-ui.put-colored($class, 'bold');
                 put '';
             }
-            for .keys.sort.reverse -> $class-name {
-                cl($class-name);
-                $.app-ui.put-sanitized(%data<classes>{$class-name})
+            for $_<> -> $class {
+                my ($class-name, $class-desc) = $class.pairs[0].kv;
+                class-name($class-name);
+                $.app-ui.put-sanitized($class-desc);
+                put '';
             }
         }
     }

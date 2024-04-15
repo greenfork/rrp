@@ -3,7 +3,8 @@
   "build-depends": [
   ],
   "depends": [
-    "MUGS"
+    "MUGS",
+    "POFile:ver<0.7.2>"
   ],
   "description": "A brand new and very nice module",
   "name": "RakoonRolePlayers",
@@ -13,6 +14,8 @@
     "MUGS::UI::CLI::Game::RakoonRolePlayers": "lib/MUGS/UI/CLI/Game/RakoonRolePlayers.rakumod"
   },
   "resources": [
+    "translations/ru/default.po",
+    "translations/en/default.po"
   ],
   "test-depends": [
   ],

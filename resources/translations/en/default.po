@@ -1,0 +1,71 @@
+msgid "Rakoon role players"
+msgstr ""
+
+msgid "Ready for journey"
+msgstr "You are ready to embark on a new journey. Choose your class:"
+
+msgid "quit"
+msgstr ""
+
+msgid "lang"
+msgstr ""
+
+msgid "Class chosen"
+msgstr "You are %s now!"
+
+msgid "Available actions: %s"
+msgstr ""
+
+msgid "Warrior"
+msgstr ""
+
+msgid "Warrior description"
+msgstr ""
+"One who actually fights the creatures out there, who braves new, possibly\n"
+"lethal dangers every day. In short: a Raku application writer."
+
+msgid "Priest"
+msgstr ""
+
+msgid "Priest description"
+msgstr ""
+"The priest is important for the group, but doesn’t put himself in the way of\n"
+"direct danger like the warrior. Instead, they perform vital tasks with their\n"
+"hands at a safe distance. In the Raku world, priests submit bug tickets, write\n"
+"tests and answer newbie questions on the #raku channel."
+
+msgid "Mage"
+msgstr ""
+
+msgid "Mage description"
+msgstr ""
+"In the flurry of activity during a quest, the mages are the ones who wield\n"
+"forceful spells in the form of new features in our implementations. The mages\n"
+"know some pretty hefty incantations, but they speak in codes (like \"Haskell\",\n"
+"\"Parrot\" or \"Lisp\") so that us mere non-initiates can only stand by in\n"
+"admiration when they get going."
+
+msgid "Healer"
+msgstr ""
+
+msgid "Healer description"
+msgstr ""
+"Some people are in the group to make sure the group is doing well, and that\n"
+"no-one is critically low on hit-points. Discussions can sometimes get heated\n"
+"or sharp, by which point we're very glad to have the people around who are\n"
+"specially trained to see beyond the ego and help us focus on the important\n"
+"parts of the picture. We simply need to be reminded at times, that we're\n"
+"(as S01 expresses it) \"a bunch of ants all cooperating (sort of) to haul food\n"
+"toward the nest (on average)\". We don't need to agree always on everything,\n"
+"but keeping the group coherent is important, and healers do their magic in\n"
+"the background to help us with that."
+
+msgid "Archer"
+msgstr ""
+
+msgid "Archer description"
+msgstr ""
+"As for long-distance influence, and reaching outside of our own circles,\n"
+"the archer fills the important role of blogging, tweeting, iron-manning\n"
+"and generally making a positive noise about Raku, which can reach people\n"
+"far away."

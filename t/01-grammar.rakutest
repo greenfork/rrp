@@ -1,31 +1,34 @@
 use Test;
+use Gettext;
 
 need MUGS::Server::Game::RakoonRolePlayers;
 
+gettext-init("en");
+
 plan 8;
 
-my $input;
-my $*ctx;
-my $actions;
-my $rs;
-my @class-choices = CLASSES.keys.sort.reverse.map(*.fc);
+my $actions = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions;
 
-$input = "Archer";
-$*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
-$actions = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Actions;
-$rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
+{
+    my @class-choices = CharacterClass::T.enums.sort(*.value).map(*.key.fc);
+    my $input = "Archer";
+    my $*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:@class-choices);
+    my $rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
 
-ok $rs, 'Parsed something';
-is $rs<class-choice>, 'archer', "Parsed 'archer'";
-is $rs<class-choice>.made, 'archer', "Made 'archer'";
-is $rs.made, 'archer', "Made TOP 'archer'";
-$*ctx = Nil;
+    ok $rs, 'Parsed something';
+    is $rs<class-choice>, 'archer', "Parsed 'archer'";
+    is $rs<class-choice>.made, 'class Archer', "Made 'class Archer'";
+    is $rs.made, 'class Archer', "Made TOP 'class Archer'";
+}
 
-$input = 'quit';
-$rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
-ok $rs, 'Parsed something';
-is $rs<command>, 'quit', "Parsed 'quit'";
-is $rs<command>.made, 'quit', "Made 'quit'";
-is $rs.made, 'quit', "Made TOP 'quit'";
+{
+    my $input = 'quit';
+    my $*ctx = MUGS::Server::Game::RakoonRolePlayers::CommandParser::Context.new(:class-choices([]));
+    my $rs = MUGS::Server::Game::RakoonRolePlayers::CommandParser.parse($input.fc, :$actions);
+    ok $rs, 'Parsed something';
+    is $rs<command>, 'quit', "Parsed 'quit'";
+    is $rs<command>.made, 'quit', "Made 'quit'";
+    is $rs.made, 'quit', "Made TOP 'quit'";
+}
 
 done-testing;
