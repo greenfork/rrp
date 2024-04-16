@@ -1,13 +1,17 @@
 {
+  "name": "RakoonRolePlayers",
+  "description": "A brand new and very nice module",
+  "version": "0.0.1",
   "auth": "",
-  "build-depends": [
-  ],
   "depends": [
-    "MUGS",
+    "MUGS::Core",
+    "MUGS::Games",
+    "MUGS::UI::CLI",
+    "RPG::Base",
     "POFile:ver<0.7.2>"
   ],
-  "description": "A brand new and very nice module",
-  "name": "RakoonRolePlayers",
+  "build-depends": [],
+  "test-depends": [],
   "provides": {
     "MUGS::Client::Game::RakoonRolePlayers": "lib/MUGS/Client/Game/RakoonRolePlayers.rakumod",
     "MUGS::Server::Game::RakoonRolePlayers": "lib/MUGS/Server/Game/RakoonRolePlayers.rakumod",
@@ -17,7 +21,5 @@
     "translations/ru/default.po",
     "translations/en/default.po"
   ],
-  "test-depends": [
-  ],
-  "version": "0.0.1"
+  "license": "Artistic-2.0"
 }
